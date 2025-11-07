@@ -1,90 +1,105 @@
 <div class="container py-4">
     {{-- Statistik --}}
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card bg-success text-white shadow-sm rounded">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 display-6"><i class="fas fa-wallet"></i></div>
-                        <div>
-                            <h6 class="card-title mb-1">Total Pemasukan</h6>
-                            <h4 class="mb-0">Rp {{ number_format($totalIncome, 0, ',', '.') }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-danger text-white shadow-sm rounded">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 display-6"><i class="fas fa-credit-card"></i></div>
-                        <div>
-                            <h6 class="card-title mb-1">Total Pengeluaran</h6>
-                            <h4 class="mb-0">Rp {{ number_format($totalExpense, 0, ',', '.') }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-primary text-white shadow-sm rounded">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 display-6"><i class="fas fa-coins"></i></div>
-                        <div>
-                            <h6 class="card-title mb-1">Sisa Uang</h6>
-                            <h4 class="mb-0">Rp {{ number_format($totalIncome - $totalExpense, 0, ',', '.') }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-    {{-- Filter dan Pencarian --}}
     <div class="row mb-4 g-3">
         <div class="col-md-4">
-            <button type="button" class="btn btn-primary shadow-sm w-100" wire:click="$set('showForm', true)">
-                <i class="fas fa-plus-circle me-2"></i>Tambah Catatan Keuangan
-            </button>
-        </div>
-        <div class="col-md-4">
-            <div class="input-group shadow-sm">
-                <span class="input-group-text bg-light border-end-0">
-                    <i class="fas fa-filter text-muted"></i>
-                </span>
-                <select id="chart-filter" wire:model.live="filter" class="form-select border-start-0">
-                    <option value="">Semua Jenis</option>
-                    <option value="income">Pemasukan</option>
-                    <option value="expense">Pengeluaran</option>
-                </select>
+            <div class="card stat-card bg-success text-white border-0 shadow-lg rounded-3">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        {{-- Icon aesthetic enhancement --}}
+                        <div class="me-3 stat-icon bg-white text-success shadow-sm rounded-circle p-3">
+                            <i class="fas fa-wallet fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="card-text mb-1 fw-bold text-white-50">Total Pemasukan</p>
+                            <h3 class="mb-0 fw-bolder">Rp {{ number_format($totalIncome, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="input-group shadow-sm">
-                <span class="input-group-text bg-light border-end-0">
-                    <i class="fas fa-search text-muted"></i>
-                </span>
-                <input type="text" 
-                    wire:model.live="search" 
-                    class="form-control border-start-0" 
-                    placeholder="Cari catatan...">
+            <div class="card stat-card bg-danger text-white border-0 shadow-lg rounded-3">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3 stat-icon bg-white text-danger shadow-sm rounded-circle p-3">
+                            <i class="fas fa-credit-card fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="card-text mb-1 fw-bold text-white-50">Total Pengeluaran</p>
+                            <h3 class="mb-0 fw-bolder">Rp {{ number_format($totalExpense, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card bg-primary text-white border-0 shadow-lg rounded-3">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3 stat-icon bg-white text-primary shadow-sm rounded-circle p-3">
+                            <i class="fas fa-coins fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="card-text mb-1 fw-bold text-white-50">Sisa Uang</p>
+                            <h3 class="mb-0 fw-bolder">Rp {{ number_format($totalIncome - $totalExpense, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    {{-- Chart: placed below the table as requested --}}
-    <div class="card mt-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Grafik Keuangan</h5>
+    {{-- Filter dan Pencarian --}}
+    <div class="card shadow-sm mb-4 rounded-3 p-3">
+        <div class="row g-3">
+            {{-- Tambah Catatan: Dibuat lebih besar (btn-lg) --}}
+            <div class="col-md-4 order-md-1 order-3">
+                <button type="button" class="btn btn-primary btn-lg shadow-sm w-100 rounded-3" wire:click="$set('showForm', true)">
+                    <i class="fas fa-plus-circle me-2"></i>Tambah Catatan Keuangan
+                </button>
+            </div>
+            {{-- Filter: Dibuat lebih besar (input-group-lg) dan rounded --}}
+            <div class="col-md-4 order-md-2 order-1">
+                <div class="input-group input-group-lg shadow-sm rounded-3">
+                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                        <i class="fas fa-filter text-muted"></i>
+                    </span>
+                    <select id="chart-filter" wire:model.live="filter" class="form-select border-start-0 rounded-end-3">
+                        <option value="">Semua Jenis</option>
+                        <option value="income">Pemasukan</option>
+                        <option value="expense">Pengeluaran</option>
+                    </select>
+                </div>
+            </div>
+            {{-- Pencarian: Dibuat lebih besar (input-group-lg) dan rounded --}}
+            <div class="col-md-4 order-md-3 order-2">
+                <div class="input-group input-group-lg shadow-sm rounded-3">
+                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" 
+                        wire:model.live="search" 
+                        class="form-control border-start-0 rounded-end-3" 
+                        placeholder="Cari catatan...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Chart: Dibuat lebih modern dengan card shadow-lg --}}
+    <div class="card shadow-lg mt-4 rounded-3">
+        <div class="card-header bg-white border-0 pt-4 pb-0">
+            <h5 class="card-title fw-bolder text-dark">Grafik Keuangan</h5>
         </div>
         <div class="card-body">
-            <div class="mb-3 d-flex align-items-center">
-                <div class="btn-group" role="group" aria-label="Chart type">
+            <div class="mb-3 d-flex flex-wrap align-items-center gap-2">
+                <p class="me-3 mb-0 fw-bold d-none d-sm-block">Tipe:</p>
+                <div class="btn-group me-3" role="group" aria-label="Chart type">
                     <button type="button" class="btn btn-outline-primary active" onclick="updateChartType('line')">Line</button>
                 </div>
-                <div class="btn-group ms-2" role="group" aria-label="Time period">
+                
+                <p class="me-3 mb-0 fw-bold d-none d-sm-block">Periode:</p>
+                <div class="btn-group" role="group" aria-label="Time period">
                     <button type="button" class="btn btn-outline-secondary" onclick="updateChartPeriod('7d')">7 Hari</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="updateChartPeriod('30d')">30 Hari</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="updateChartPeriod('all')">Semua</button>
@@ -94,139 +109,153 @@
         </div>
     </div>
 
-    {{-- Tabel Catatan Keuangan --}}
-    <div class="table-responsive shadow-sm rounded">
-        <table class="table table-bordered table-hover align-middle">
-            <thead>
-                <tr class="table-light">
-                    <th>No</th>
-                    <th wire:click="sortBy('transaction_date')" style="cursor: pointer">
-                        Tanggal
-                        @if ($sortField === 'transaction_date')
-                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                        @endif
-                    </th>
-                    <th>Jenis</th>
-                    <th wire:click="sortBy('amount')" style="cursor: pointer">
-                        Jumlah
-                        @if ($sortField === 'amount')
-                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                        @endif
-                    </th>
-                    <th>Judul</th>
-                    <th>Kategori</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($records as $record)
-                    <tr>
-                        {{-- FIX: Nomor Urut Akurat dan Berurutan di semua halaman --}}
-                        <td>{{ ($records->firstItem() + $loop->index) }}</td>
-                        <td>{{ $record->transaction_date->format('d/m/Y') }}</td>
-                        <td>
-                            <span class="badge bg-{{ $record->type === 'income' ? 'success' : 'danger' }}">
-                                {{ $record->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}
-                            </span>
-                        </td>
-                        <td>Rp {{ number_format($record->amount, 0, ',', '.') }}</td>
-                        <td>{{ $record->title }}</td>
-                        <td>{{ $record->category }}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button wire:click="showDetail({{ $record->id }})" class="btn btn-sm btn-info" title="Lihat Detail">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button wire:click="edit({{ $record->id }})" class="btn btn-sm btn-warning" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button wire:click="delete({{ $record->id }})" class="btn btn-sm btn-danger" 
-                                        onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">Belum ada catatan keuangan</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-        
-        {{-- PAGINASI: Menampilkan tautan navigasi di bawah tabel --}}
-        {{ $records->links() }}
+    {{-- Tabel Catatan Keuangan: Dibuat lebih rapi dalam card --}}
+    <div class="card shadow-lg mt-4 rounded-3">
+        <div class="card-header bg-white border-0 pt-4 pb-0">
+            <h5 class="card-title fw-bolder text-dark">Daftar Transaksi</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0 financial-table">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>No</th>
+                            <th wire:click="sortBy('transaction_date')" style="cursor: pointer">
+                                Tanggal
+                                @if ($sortField === 'transaction_date')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th>Jenis</th>
+                            <th wire:click="sortBy('amount')" style="cursor: pointer">
+                                Jumlah
+                                @if ($sortField === 'amount')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($records as $record)
+                            <tr>
+                                <td>{{ ($records->firstItem() + $loop->index) }}</td>
+                                <td>{{ $record->transaction_date->format('d/m/Y') }}</td>
+                                <td>
+                                    {{-- Badge aesthetic enhancement --}}
+                                    <span class="badge rounded-pill text-uppercase px-3 py-2 bg-{{ $record->type === 'income' ? 'success' : 'danger' }}">
+                                        {{ $record->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}
+                                    </span>
+                                </td>
+                                <td class="fw-bold text-nowrap">Rp {{ number_format($record->amount, 0, ',', '.') }}</td>
+                                <td>{{ $record->title }}</td>
+                                <td>{{ $record->category }}</td>
+                                <td class="action-buttons text-center">
+                                    {{-- Button aesthetic enhancement: compact and rounded --}}
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button wire:click="showDetail({{ $record->id }})" class="btn btn-info rounded-start-pill" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button wire:click="edit({{ $record->id }})" class="btn btn-warning" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button wire:click="delete({{ $record->id }})" class="btn btn-danger rounded-end-pill" 
+                                                onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">Tidak ada catatan keuangan yang ditemukan.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            {{-- PAGINASI: Menampilkan tautan navigasi di bawah tabel --}}
+            <div class="card-footer bg-white border-0">
+                {{ $records->links() }}
+            </div>
+        </div>
     </div>
 
-    {{-- Chart: placed below the table as requested --}}
 
-    {{-- Form Modal Tambah --}}
-    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showForm ? 'block' : 'none' }}">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow">
-                <div class="modal-header bg-light">
-                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Tambah Catatan Keuangan</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showForm', false)"></button>
+    {{-- Form Modal Tambah (Aesthetic Update) --}}
+    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showForm ? 'block' : 'none' }}" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header bg-primary text-white border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle me-2"></i>Tambah Catatan Keuangan</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="$set('showForm', false)"></button>
                 </div>
                 <form wire:submit="save">
-                    <div class="modal-body">
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-tag me-2"></i>Jenis</label>
-                            <select id="add-type" wire:model.live="type" class="form-select border-2">
-                                <option value="income">Pemasukan</option>
-                                <option value="expense">Pengeluaran</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-money-bill me-2"></i>Jumlah</label>
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" wire:model="amount" class="form-control border-2" step="0.01">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold text-muted"><i class="fas fa-tag me-2"></i>Jenis</label>
+                                <select id="add-type" wire:model.live="type" class="form-select form-select-lg border-2 rounded-3">
+                                    <option value="income">Pemasukan</option>
+                                    <option value="expense">Pengeluaran</option>
+                                </select>
                             </div>
-                            @error('amount') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-heading me-2"></i>Judul</label>
-                            <input type="text" wire:model="title" class="form-control border-2">
-                            @error('title') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-align-left me-2"></i>Deskripsi</label>
-                            <textarea wire:model="description" class="form-control border-2" rows="3" placeholder="Tambahkan keterangan atau catatan (opsional)"></textarea>
-                            @error('description') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold text-muted"><i class="fas fa-calendar me-2"></i>Tanggal Transaksi</label>
+                                <input type="date" wire:model="transaction_date" class="form-control form-control-lg border-2 rounded-3">
+                                @error('transaction_date') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-folder me-2"></i>Kategori</label>
-                            <select id="add-category" wire:model="category" class="form-select border-2">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-money-bill me-2"></i>Jumlah</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text rounded-start-3">Rp</span>
+                                <input type="number" wire:model="amount" class="form-control border-2 rounded-end-3" step="0.01">
+                            </div>
+                            @error('amount') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-heading me-2"></i>Judul</label>
+                            <input type="text" wire:model="title" class="form-control form-control-lg border-2 rounded-3">
+                            @error('title') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-folder me-2"></i>Kategori</label>
+                            <select id="add-category" wire:model="category" class="form-select form-select-lg border-2 rounded-3">
                                 <option value="">Pilih kategori</option>
                                 @foreach(($categories[$type] ?? []) as $cat)
                                     <option value="{{ $cat }}">{{ $cat }}</option>
                                 @endforeach
                             </select>
-                            @error('category') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                            @error('category') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-image me-2"></i>Gambar</label>
-                            <input type="file" wire:model="image" class="form-control border-2" accept="image/*">
-                            <div wire:loading wire:target="image" class="text-primary mt-1">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-align-left me-2"></i>Deskripsi</label>
+                            <textarea wire:model="description" class="form-control border-2 rounded-3" rows="3" placeholder="Tambahkan keterangan atau catatan (opsional)"></textarea>
+                            @error('description') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-image me-2"></i>Gambar Bukti</label>
+                            <input type="file" wire:model="image" class="form-control border-2 rounded-3" accept="image/*">
+                            <div wire:loading wire:target="image" class="text-primary small mt-1">
                                 <i class="fas fa-spinner fa-spin me-1"></i>Mengunggah...
                             </div>
-                            @error('image') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
+                            @error('image') <span class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"><i class="fas fa-calendar me-2"></i>Tanggal Transaksi</label>
-                            <input type="date" wire:model="transaction_date" class="form-control border-2">
-                            @error('transaction_date') <span class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</span> @enderror
-                        </div>
+
                     </div>
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" wire:click="$set('showForm', false)">
+                    <div class="modal-footer bg-light border-0 rounded-bottom-4">
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" wire:click="$set('showForm', false)">
                             <i class="fas fa-times me-1"></i>Tutup
                         </button>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
                             <i class="fas fa-save me-1"></i>Simpan
                         </button>
                     </div>
@@ -235,115 +264,133 @@
         </div>
     </div>
 
-    {{-- Edit Modal --}}
-    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showEditModal ? 'block' : 'none' }}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Catatan Keuangan</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showEditModal', false)"></button>
+    {{-- Edit Modal (Aesthetic Update - Matched Add Modal) --}}
+    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showEditModal ? 'block' : 'none' }}" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header bg-warning text-white border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-edit me-2"></i>Edit Catatan Keuangan</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="$set('showEditModal', false)"></button>
                 </div>
                 <form wire:submit.prevent="update">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold text-muted"><i class="fas fa-tag me-2"></i>Jenis</label>
+                                <select id="edit-type" wire:model="type" class="form-select form-select-lg border-2 rounded-3">
+                                    <option value="income">Pemasukan</option>
+                                    <option value="expense">Pengeluaran</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold text-muted"><i class="fas fa-calendar me-2"></i>Tanggal Transaksi</label>
+                                <input type="date" wire:model="transaction_date" class="form-control form-control-lg border-2 rounded-3">
+                                @error('transaction_date') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Jenis</label>
-                            <select id="edit-type" wire:model="type" class="form-select">
-                                <option value="income">Pemasukan</option>
-                                <option value="expense">Pengeluaran</option>
-                            </select>
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-money-bill me-2"></i>Jumlah</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text rounded-start-3">Rp</span>
+                                <input type="number" wire:model="amount" class="form-control border-2 rounded-end-3" step="0.01">
+                            </div>
+                            @error('amount') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Jumlah</label>
-                            <input type="number" wire:model="amount" class="form-control" step="0.01">
-                            @error('amount') <span class="text-danger">{{ $message }}</span> @enderror
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-heading me-2"></i>Judul</label>
+                            <input type="text" wire:model="title" class="form-control form-control-lg border-2 rounded-3">
+                            @error('title') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Judul</label>
-                            <input type="text" wire:model="title" class="form-control">
-                            @error('title') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Deskripsi</label>
-                            <textarea wire:model="description" class="form-control" rows="3" placeholder="Tambahkan keterangan atau catatan (opsional)"></textarea>
-                            @error('description') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kategori</label>
-                            <select id="edit-category" wire:model="category" class="form-select">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-folder me-2"></i>Kategori</label>
+                            <select id="edit-category" wire:model="category" class="form-select form-select-lg border-2 rounded-3">
                                 <option value="">Pilih kategori</option>
                                 @foreach(($categories[$type] ?? []) as $cat)
                                     <option value="{{ $cat }}">{{ $cat }}</option>
                                 @endforeach
                             </select>
-                            @error('category') <span class="text-danger">{{ $message }}</span> @enderror
+                            @error('category') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Gambar</label>
-                            <input type="file" wire:model="image" class="form-control" accept="image/*">
-                            <div wire:loading wire:target="image" class="text-primary mt-1 small">
-                                Mengunggah...
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-align-left me-2"></i>Deskripsi</label>
+                            <textarea wire:model="description" class="form-control border-2 rounded-3" rows="3" placeholder="Tambahkan keterangan atau catatan (opsional)"></textarea>
+                            @error('description') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted"><i class="fas fa-image me-2"></i>Gambar Bukti (Ubah)</label>
+                            <input type="file" wire:model="image" class="form-control border-2 rounded-3" accept="image/*">
+                            <div wire:loading wire:target="image" class="text-primary small mt-1">
+                                <i class="fas fa-spinner fa-spin me-1"></i>Mengunggah...
                             </div>
-                            @error('image') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal Transaksi</label>
-                            <input type="date" wire:model="transaction_date" class="form-control">
-                            @error('transaction_date') <span class="text-danger">{{ $message }}</span> @enderror
+                            @error('image') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="$set('showEditModal', false)">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                    <div class="modal-footer bg-light border-0 rounded-bottom-4">
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" wire:click="$set('showEditModal', false)">
+                            <i class="fas fa-times me-1"></i>Tutup
+                        </button>
+                        <button type="submit" class="btn btn-warning rounded-pill text-white px-4">
+                            <i class="fas fa-sync-alt me-1"></i>Update
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    {{-- Detail Modal --}}
-    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showDetailModal ? 'block' : 'none' }}">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detail Catatan</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showDetailModal', false)"></button>
+    
+    {{-- Detail Modal (Aesthetic Update) --}}
+    <div class="modal" tabindex="-1" role="dialog" style="display: {{ $showDetailModal ? 'block' : 'none' }}" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header bg-info text-white border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-search me-2"></i>Detail Catatan Keuangan</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="$set('showDetailModal', false)"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     @if($selectedRecord)
-                        <dl class="row">
-                            <dt class="col-sm-3">Judul</dt>
-                            <dd class="col-sm-9">{{ $selectedRecord->title }}</dd>
+                        <div class="card p-3 bg-light border-0">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-3 fw-bold text-muted">Judul</dt>
+                                <dd class="col-sm-9">{{ $selectedRecord->title }}</dd>
 
-                            <dt class="col-sm-3">Jenis</dt>
-                            <dd class="col-sm-9">{{ $selectedRecord->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}</dd>
+                                <dt class="col-sm-3 fw-bold text-muted">Jenis</dt>
+                                <dd class="col-sm-9"><span class="badge bg-{{ $selectedRecord->type === 'income' ? 'success' : 'danger' }} text-uppercase">{{ $selectedRecord->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}</span></dd>
 
-                            <dt class="col-sm-3">Jumlah</dt>
-                            <dd class="col-sm-9">Rp {{ number_format($selectedRecord->amount, 0, ',', '.') }}</dd>
+                                <dt class="col-sm-3 fw-bold text-muted">Jumlah</dt>
+                                <dd class="col-sm-9 fw-bolder text-primary">Rp {{ number_format($selectedRecord->amount, 0, ',', '.') }}</dd>
 
-                            <dt class="col-sm-3">Kategori</dt>
-                            <dd class="col-sm-9">{{ $selectedRecord->category }}</dd>
+                                <dt class="col-sm-3 fw-bold text-muted">Kategori</dt>
+                                <dd class="col-sm-9">{{ $selectedRecord->category }}</dd>
 
-                            <dt class="col-sm-3">Tanggal</dt>
-                            <dd class="col-sm-9">{{ $selectedRecord->transaction_date->format('d/m/Y') }}</dd>
+                                <dt class="col-sm-3 fw-bold text-muted">Tanggal</dt>
+                                <dd class="col-sm-9">{{ $selectedRecord->transaction_date->format('d/m/Y') }}</dd>
 
-                            <dt class="col-sm-3">Deskripsi</dt>
-                            <dd class="col-sm-9">{{ $selectedRecord->description }}</dd>
+                                <dt class="col-sm-3 fw-bold text-muted">Deskripsi</dt>
+                                <dd class="col-sm-9">{{ $selectedRecord->description ?? '-' }}</dd>
+                            </dl>
+                        </div>
 
-                            @if($selectedRecord->image_path)
-                                <dt class="col-sm-3">Gambar</dt>
-                                <dd class="col-sm-9"><img src="{{ asset('storage/' . $selectedRecord->image_path) }}" alt="Gambar" class="img-fluid"/></dd>
-                            @endif
-                        </dl>
+                        @if($selectedRecord->image_path)
+                            <div class="mt-4">
+                                <h6 class="fw-bold text-muted mb-2">Gambar Bukti:</h6>
+                                <img src="{{ asset('storage/' . $selectedRecord->image_path) }}" alt="Gambar Bukti" class="img-fluid rounded-3 border shadow-sm"/>
+                            </div>
+                        @endif
                     @else
-                        <p>Tidak ada data untuk ditampilkan.</p>
+                        <p class="text-center text-muted">Tidak ada data untuk ditampilkan.</p>
                     @endif
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="$set('showDetailModal', false)">Tutup</button>
+                <div class="modal-footer bg-light border-0 rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" wire:click="$set('showDetailModal', false)">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     {{-- We'll keep the chart in the first section where the buttons are already defined --}}
 
@@ -498,15 +545,12 @@
             const seriesColors = [];
             if (!chartFilter || chartFilter === 'income') {
                 series.push({ name: 'Pemasukan', data: incomePoints });
-                seriesColors.push('#28a745');
+                seriesColors.push('#198754'); // success/green
             }
             if (!chartFilter || chartFilter === 'expense') {
                 series.push({ name: 'Pengeluaran', data: expensePoints });
-                seriesColors.push('#dc3545');
+                seriesColors.push('#dc3545'); // danger/red
             }
-
-                // Debugging info (will appear in browser console)
-                try { console.debug('updateChart', { chartFilter, datesLength: dates.length, incomeLen: data.income.length, expenseLen: data.expense.length, seriesLen: series.length }); } catch(e){}
 
                 // If there are no date points at all, show a friendly placeholder instead of an empty chart
                 const chartContainer = document.querySelector('#financial-chart');
@@ -599,7 +643,7 @@
         // Handler untuk mengubah periode
         function updateChartPeriod(period) {
             currentPeriod = period;
-            const filteredData = filterDataByPeriod(period);
+            const filteredData = filterDataByPeriod(currentPeriod);
             updateChart(filteredData);
             
             // Update active state pada tombol
@@ -694,39 +738,108 @@
     @endpush
 
 @push('styles')
-<style>
-/* Tiny aesthetic improvements */
-.card-title { font-weight: 600; }
-.table thead tr.table-light th { border-top: none; }
-.table-hover tbody tr:hover { background: rgba(0,0,0,0.03); }
-.btn.active { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
-.btn-outline-primary.active { background-color: #0d6efd; color: #fff; border-color: #0d6efd; }
-.btn-outline-secondary.active { background-color: #6c757d; color: #fff; border-color: #6c757d; }
-.img-fluid { max-height: 200px; }
-.container .card { border: none; }
-.stat-card .display-6 { font-size: 1.6rem; }
-/* More aesthetic polish */
-.card { border-radius: 12px; }
-.card .card-body { background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.9)); }
-.card-header { background: transparent; border-bottom: 0; }
-.stat-card .card-body { display:flex; gap: 1rem; align-items:center; }
-.table { background: #fff; }
-.table thead th { background: linear-gradient(90deg, #f8f9fa, #eef2f6); }
-.btn-group .btn { transition: all .15s ease; }
-.chart-container { padding: 1rem; }
+    <style>
+    /* Global Aesthetic Improvements */
+    .container { max-width: 1400px; }
+    .card { border: none; transition: transform 0.2s, box-shadow 0.2s; }
+    .card-header { background: transparent; border-bottom: 0; }
+    .card-title { font-weight: 800; } /* Extra bold for titles */
+    .shadow-lg { box-shadow: 0 1rem 3rem rgba(0,0,0,.05) !important; } /* Softer, larger shadow */
+    .rounded-3 { border-radius: 0.75rem !important; }
+    .rounded-4 { border-radius: 1.25rem !important; } /* More rounded for modals */
 
-/* make the net series stand out with dashed markers when negative */
-.apexcharts-series .apexcharts-series-2 .apexcharts-marker { stroke-dasharray: 3; }
+    /* Stat Card Specifics */
+    .stat-card {
+        transform: translateY(0);
+    }
+    .stat-card:hover {
+        transform: translateY(-3px); /* subtle lift on hover */
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.15) !important;
+    }
+    .stat-card .stat-icon {
+        color: #fff; /* Ensure icon is white when card is colored */
+    }
+    .stat-card .bg-success .stat-icon { color: #198754 !important; }
+    .stat-card .bg-danger .stat-icon { color: #dc3545 !important; }
+    .stat-card .bg-primary .stat-icon { color: #0d6efd !important; }
+    .stat-card h3 { font-size: 1.75rem; }
 
-/* Brighten stat cards: override gradient for colored stat cards to keep colors vivid */
-.card.bg-success .card-body, .card.bg-danger .card-body, .card.bg-primary .card-body {
-    background: transparent !important;
-}
-.card.bg-success { box-shadow: 0 6px 18px rgba(40,167,69,0.12); }
-.card.bg-danger { box-shadow: 0 6px 18px rgba(220,53,69,0.12); }
-.card.bg-primary { box-shadow: 0 6px 18px rgba(13,110,253,0.12); }
-.card.bg-success .display-6, .card.bg-danger .display-6, .card.bg-primary .display-6 { color: #fff; }
-</style>
+    /* Forms and Filters */
+    .form-control-lg, .form-select-lg, .btn-lg {
+        height: calc(3.5rem + 2px); /* Taller inputs for better touch experience */
+    }
+    .input-group-text { background-color: #f8f9fa !important; }
+    .form-control, .form-select {
+        transition: all 0.2s ease;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Table Specifics */
+    .financial-table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .financial-table thead th {
+        background-color: #f1f2f6; /* Lighter shade of light */
+        color: #333;
+        font-weight: 700;
+        border-bottom: 2px solid #e9ecef;
+        padding: 1rem 1rem;
+    }
+    .financial-table tbody tr {
+        border-bottom: 1px solid #f8f9fa; /* minimal row separator */
+    }
+    .financial-table tbody tr:last-child {
+        border-bottom: none;
+    }
+    .financial-table tbody tr:hover {
+        background-color: #f7f7f7;
+    }
+    .financial-table td {
+        padding: 1rem 1rem;
+    }
+    
+    /* Action Buttons (Mobile Consistency) */
+    .action-buttons .btn-group-sm .btn {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.8rem;
+    }
+    /* Ensure action buttons are small and compact on all screens */
+
+    /* Chart Buttons */
+    .btn-group .btn {
+        border-radius: 0.5rem;
+    }
+    .btn-outline-primary.active, .btn-outline-primary:hover { 
+        background-color: #0d6efd; 
+        color: #fff; 
+        border-color: #0d6efd; 
+    }
+    .btn-outline-secondary.active, .btn-outline-secondary:hover { 
+        background-color: #6c757d; 
+        color: #fff; 
+        border-color: #6c757d; 
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border: none;
+    }
+    .btn-close-white {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    /* Image detail in Modal */
+    .img-fluid { 
+        max-width: 100%; 
+        height: auto; 
+        max-height: 300px;
+        object-fit: cover;
+    }
+    </style>
 @endpush
 
 {{-- Hidden container for server-driven SweetAlert payload (Livewire updates this attribute) --}}
@@ -744,7 +857,7 @@
         const el = document.getElementById('swal-data');
         if (!el) return;
         let raw = el.getAttribute('data-swal');
-        if (!raw || raw === 'null') return;
+        if (!raw || raw === 'null' || raw === '{}' || raw === '[]') return;
         try {
             const payload = JSON.parse(raw);
             if (payload && payload.title) {
@@ -764,5 +877,3 @@
     document.addEventListener('DOMContentLoaded', () => readSwalDataAndShow());
     document.addEventListener('livewire:update', () => readSwalDataAndShow());
 </script>
-
-</div>
