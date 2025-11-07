@@ -8,56 +8,85 @@ use Livewire\WithFileUploads;
 use App\Models\FinancialRecord;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * ╔═══════════════════════════════════════════════════════════════════════╗
+ * ║                                                                       ║
+ * ║        💎 FINANCIAL RECORDS LIVEWIRE COMPONENT 💎                     ║
+ * ║                                                                       ║
+ * ║     Real-time financial management with elegant interactions         ║
+ * ║     Built with Livewire for seamless user experience                 ║
+ * ║                                                                       ║
+ * ╚═══════════════════════════════════════════════════════════════════════╝
+ */
+
 class FinancialRecordsLivewire extends Component
 {
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │  🎨 Traits & Configuration                                      │
+    // └─────────────────────────────────────────────────────────────────┘
+    
     // FIX 1: Memastikan styling paginasi menggunakan Bootstrap
     protected $paginationTheme = 'bootstrap'; 
     use WithPagination, WithFileUploads;
 
-    public $showForm = false;
-    public $showEditModal = false;
-    public $showDetailModal = false;
-    public $search = '';
-    public $filter = '';
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │  📊 Component State Properties                                  │
+    // └─────────────────────────────────────────────────────────────────┘
+    
+    public $showForm = false;          // 📝 Toggle form visibility
+    public $showEditModal = false;     // ✏️ Edit modal state
+    public $showDetailModal = false;   // 👁️ Detail view state
+    public $search = '';               // 🔍 Search query
+    public $filter = '';               // 🎯 Filter by type
     
     // FIX 2: Default sorting ke Tanggal Terbaru (desc)
-    public $sortField = 'transaction_date';
-    public $sortDirection = 'desc'; // <-- Data terbaru akan muncul di atas
+    public $sortField = 'transaction_date';  // 📅 Default sort field
+    public $sortDirection = 'desc';          // ⬇️ Data terbaru akan muncul di atas
     
-    public $selectedRecord = null;
-    public $swal = null;
+    public $selectedRecord = null;     // 🎯 Currently selected record
+    public $swal = null;               // 🔔 SweetAlert notifications
     
-    // Form fields
-    public $recordId;
-    public $type = 'expense';
-    public $amount;
-    public $title;
-    public $description;
-    public $category;
-    public $image;
-    public $transaction_date;
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │  📝 Form Input Fields                                           │
+    // └─────────────────────────────────────────────────────────────────┘
+    
+    public $recordId;            // 🆔 Record identifier
+    public $type = 'expense';    // 💸 Transaction type
+    public $amount;              // 💰 Amount value
+    public $title;               // 📌 Transaction title
+    public $description;         // 📄 Detailed description
+    public $category;            // 🏷️ Category tag
+    public $image;               // 🖼️ Receipt image
+    public $transaction_date;    // 📆 Transaction date
 
-    // Daftar kategori yang tersedia
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │  🏷️ Available Categories                                        │
+    // └─────────────────────────────────────────────────────────────────┘
+    
     public $categories = [
         'income' => [
-            'Gaji',
-            'Bonus',
-            'Hadiah',
-            'Investasi',
-            'Penjualan',
-            'Lainnya'
+            'Gaji',          // 💼 Salary
+            'Bonus',         // 🎁 Bonus
+            'Hadiah',        // 🎉 Gift
+            'Investasi',     // 📈 Investment
+            'Penjualan',     // 🛒 Sales
+            'Lainnya'        // ➕ Others
         ],
         'expense' => [
-            'Makanan & Minuman',
-            'Transportasi',
-            'Belanja',
-            'Pendidikan',
-            'Hiburan',
-            'Kesehatan',
-            'Tagihan',
-            'Lainnya'
+            'Makanan & Minuman',  // 🍔 Food & Beverages
+            'Transportasi',       // 🚗 Transportation
+            'Belanja',            // 🛍️ Shopping
+            'Pendidikan',         // 📚 Education
+            'Hiburan',            // 🎮 Entertainment
+            'Kesehatan',          // 🏥 Healthcare
+            'Tagihan',            // 💳 Bills
+            'Lainnya'             // ➕ Others
         ]
     ];
+    
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │  ✅ Validation Rules                                            │
+    // └─────────────────────────────────────────────────────────────────┘
     
     protected $rules = [
         'type' => 'required|in:income,expense',
@@ -68,6 +97,10 @@ class FinancialRecordsLivewire extends Component
         'image' => 'nullable|image',
         'transaction_date' => 'required|date'
     ];
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  🔄 Lifecycle Hooks
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     // FIX 3: Mereset halaman saat ada perubahan filter atau pencarian
     public function updated($propertyName)
@@ -81,6 +114,10 @@ class FinancialRecordsLivewire extends Component
     {
         $this->transaction_date = now()->format('Y-m-d');
     }
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  👁️ View & Display Methods
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     public function showDetail($id)
     {
@@ -125,6 +162,11 @@ class FinancialRecordsLivewire extends Component
         ]);
     }
 
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  💾 CRUD Operations
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    // ─── Create New Record ────────────────────────────────────────────
     public function save()
     {
         $this->validate();
@@ -152,6 +194,7 @@ class FinancialRecordsLivewire extends Component
         ];
     }
 
+    // ─── Edit Existing Record ─────────────────────────────────────────
     public function edit($id)
     {
         $record = FinancialRecord::findOrFail($id);
@@ -165,6 +208,7 @@ class FinancialRecordsLivewire extends Component
         $this->showEditModal = true;
     }
 
+    // ─── Update Record ────────────────────────────────────────────────
     public function update()
     {
         $this->validate();
@@ -197,6 +241,7 @@ class FinancialRecordsLivewire extends Component
         ];
     }
 
+    // ─── Delete Record ────────────────────────────────────────────────
     public function delete($id)
     {
         $record = FinancialRecord::findOrFail($id);
@@ -212,6 +257,10 @@ class FinancialRecordsLivewire extends Component
         ];
     }
 
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  🔀 Sorting & Filtering
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
     public function sortBy($field)
     {
         // FIX 4: Reset halaman saat sorting berubah agar nomor urut konsisten
@@ -226,3 +275,8 @@ class FinancialRecordsLivewire extends Component
         }
     }
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+//  ✨ Powered by Livewire - Real-time reactivity at its finest
+//  💜 Made with care for seamless financial management
+// ═══════════════════════════════════════════════════════════════════════
